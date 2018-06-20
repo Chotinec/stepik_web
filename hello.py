@@ -1,7 +1,13 @@
 def app(environ, start_response):
-        status='200 OK'
-        headers=[
-                ('Content-type','text/plain')
-        ]
-        satrt_response(status, headers)
-        return [bytes(i + '\n', 'ascii') for i in environ['QUERY_STRING'].split('&')]
+    # Returns a dictionary in which the values are lists
+
+    data = environ['QUERY_STRING']
+    d = [bytes(i + '\n', 'ascii') for i in environ['QUERY_STRING'].split('&')]
+
+    status = '200 OK'
+    response_headers = [
+        ('Content-type','text/plain'),
+        ('Content-Length', str(len(data)))
+    ]
+    start_response(status, response_headers)
+    return d
